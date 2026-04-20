@@ -186,6 +186,7 @@ public class FolderCard : UserControl
         Color originalColor = this.BackColor;
         Color hoverColor = Color.FromArgb(50, 50, 50);
         
+        // 鼠标进入卡片本身
         this.MouseEnter += (s, e) =>
         {
             this.BackColor = hoverColor;
@@ -193,8 +194,41 @@ public class FolderCard : UserControl
         
         this.MouseLeave += (s, e) =>
         {
-            this.BackColor = originalColor;
+            // 检查鼠标是否真的离开了整个卡片区域
+            if (!this.ClientRectangle.Contains(this.PointToClient(Cursor.Position)))
+            {
+                this.BackColor = originalColor;
+            }
         };
+        
+        // 让所有子控件的事件也触发卡片的高亮
+        AttachHoverToChildren(this, hoverColor, originalColor);
+    }
+
+    private void AttachHoverToChildren(Control parent, Color hoverColor, Color originalColor)
+    {
+        foreach (Control child in parent.Controls)
+        {
+            child.MouseEnter += (s, e) =>
+            {
+                this.BackColor = hoverColor;
+            };
+            
+            child.MouseLeave += (s, e) =>
+            {
+                // 检查鼠标是否真的离开了整个卡片区域
+                if (!this.ClientRectangle.Contains(this.PointToClient(Cursor.Position)))
+                {
+                    this.BackColor = originalColor;
+                }
+            };
+            
+            // 递归处理子控件的子控件（比如进度条背景里的进度条）
+            if (child.HasChildren)
+            {
+                AttachHoverToChildren(child, hoverColor, originalColor);
+            }
+        }
     }
 
     private void AttachClickEvent()
