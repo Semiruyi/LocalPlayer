@@ -13,4 +13,10 @@
     <PackageReference Include="VideoLAN.LibVLC.Windows" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Resources\Icons\*.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
