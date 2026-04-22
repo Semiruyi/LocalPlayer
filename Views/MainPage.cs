@@ -66,7 +66,7 @@ public partial class MainPage : UserControl
 
     private void LoadSavedFolders()
     {
-        var folders = settingsService.GetFolders();
+        var folders = settingsService.GetFolders().ToList();
         foreach (var folder in folders)
         {
             if (Directory.Exists(folder.Path))
